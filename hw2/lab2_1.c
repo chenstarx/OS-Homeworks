@@ -5,9 +5,9 @@ MODULE_LICENSE("Dual BSD/GPL");
 
 static int hello_init(void)
 {
-    unsigned int ms = jiffies * 1000 / HZ;
+    unsigned int tick = 1000 / HZ;
     printk(KERN_ALERT "Hello, world\n");
-    printk(KERN_ALERT "Tick time in milliseconds: %d", ms);
+    printk(KERN_ALERT "Tick time: %d", tick);
     return 0;
 }
 

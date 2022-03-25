@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 #define READ_END 0
 #define WRITE_END 1
@@ -12,6 +13,7 @@
 #define NUM_TRIALS 100000
 
 long nhits = 0;
+sem_t lock;
 
 void *runner(void *n);
 
@@ -38,6 +40,7 @@ int main(int argc, char *argv[])
 
     printf("Simulation start with n = %d\n", n);
 
+    sem_init(&lock, 0, 1);
     pthread_attr_init(&attr);
 
     for (int i = 0; i < NUM_THREAD; i++)
@@ -49,6 +52,8 @@ int main(int argc, char *argv[])
     printf("Number of hits %ld\n", nhits);
     float result = (float) nhits / (float) NUM_TRIALS / 4.0;
     printf("The result is %.2f\n", result);
+
+    sem_destroy(&lock);
 
     return 0;
 }
@@ -73,7 +78,9 @@ void *runner(void *n)
             // check if there is student with the same birthday
             if (arr[birthday] == 1)
             {
+                sem_wait(&lock);
                 nhits += 1;
+                sem_post(&lock);
                 break;
             }
             else
