@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     shm_hit = (int *) mmap(0, sizeof(int), PROT_WRITE, MAP_SHARED, shm_fd_hit, 0);
     shm_lock = (sem_t*) mmap(0, sizeof(sem_t), PROT_WRITE, MAP_SHARED, shm_fd_lock, 0);
 
-    sem_init(shm_lock, 0, 2);
+    sem_init(shm_lock, 1, 1);
 
     int flag = 0;
     pid_t pids[3];
